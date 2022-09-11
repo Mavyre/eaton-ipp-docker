@@ -1,0 +1,13 @@
+[Unit]
+Description=Eaton Intelligent Power Protector
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+User=root
+ExecStartPre=/usr/bin/docker run --privileged --rm tonistiigi/binfmt --install amd64
+ExecStart=/usr/bin/docker start -a eaton-ipp
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
