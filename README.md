@@ -153,8 +153,8 @@ Depending on the location of your shutdown script, you might need to update the 
 ```sh
 docker run -d --net host -v ~/ipp/db:/usr/local/eaton/IntelligentPowerProtector/db -v ~/ipp/configs:/usr/local/eaton/IntelligentPowerProtector/configs --name eaton-ipp Mavyre/eaton-ipp
 ```
-Launching the docker with the host network allows IPP to easily scan the network for UPSes, receive the shutdown signals and connect to the host to shut it down.
-If the shutdown target is not the host, you can run the docker with `-p 4679:4679 -p 4680:4680` instead.
+Launching the docker within the host namespace allows IPP to easily scan the network for UPSes, receive the shutdown signals and connect to the host to shut it down.
+If the shutdown target is not the host, you can run the docker with `-p 4679:4679 -p 4680:4680 -p 4679:4679/udp -p 4680:4680/udp` instead of `--net host`.
 
 The two folders `db` and `configs` are mapped on host to retain IPP configurations and database.
 
