@@ -69,6 +69,7 @@
         <li><a href="#build-the-docker-image">Build the image</a></li>
       </ul>
     </li>
+    <li><a href="#upgrade-considerations">Upgrade Considerations</a></li>
     <li>
       <a href="#usage">Usage</a>
       <ul>
@@ -134,11 +135,23 @@ OR
    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- UPGRADE CONSIDERATIONS -->
+## Upgrade Considerations
+
+When upgrading from app version prior to 1.72, the mount path inside the container changed.
+Eaton IPP not resides in `/usr/local/eaton/IntelligentPowerProtector` instead of `/usr/local/Eaton/IntelligentPowerProtector` (notice the lower-case `eaton` folder).  
+
+All mounted volume paths need to be adjusted.
+
+Depending on the location of your shutdown script, you might need to update the path to it in Eaton IPP shutdown action as well.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- USAGE EXAMPLES -->
 ## Usage
 
 ```sh
-docker run -d --net host -v ~/ipp/db:/usr/local/Eaton/IntelligentPowerProtector/db -v ~/ipp/configs:/usr/local/Eaton/IntelligentPowerProtector/configs --name eaton-ipp Mavyre/eaton-ipp
+docker run -d --net host -v ~/ipp/db:/usr/local/eaton/IntelligentPowerProtector/db -v ~/ipp/configs:/usr/local/eaton/IntelligentPowerProtector/configs --name eaton-ipp Mavyre/eaton-ipp
 ```
 Launching the docker with the host network allows IPP to easily scan the network for UPSes, receive the shutdown signals and connect to the host to shut it down.
 If the shutdown target is not the host, you can run the docker with `-p 4679:4679 -p 4680:4680` instead.
@@ -156,11 +169,11 @@ The easiest way with `--net host` is to use a shutdown script and SSH:
   ```
   username ALL = (root) NOPASSWD: /usr/sbin/poweroff
   ```
-* Run the docker container with the script mapped: `-v ~/shutdown.sh:/root/shutdown.sh`
-* Allow the script to be executed in the container: `docker exec eaton-ipp chmod u+x /root/shutdown.sh`
+* Eaton IPP enforces shutdown scripts to be located in its `/usr/local/eaton/IntelligentPowerProtector/configs/actions` folder, so put the script in `~/ipp/configs/actions`
+* Allow the script to be executed in the container: `docker exec eaton-ipp chmod u+x /usr/local/eaton/IntelligentPowerProtector/configs/actions/shutdown.sh`
 * In IPP, under *Settings*, *Shutdown*, *Edit shutdown configuration*:
   * Shutdown type: *Script*
-  * Shutdown script: `/root/shutdown.sh`
+  * Shutdown script: `/usr/local/eaton/IntelligentPowerProtector/configs/actions/shutdown.sh`
 
 Each time a shutdown will be triggered by the UPS, the `shutdown.sh` script will be executed by IPP and shut down the host using SSH.
 
@@ -180,7 +193,7 @@ sudo docker run --privileged --rm tonistiigi/binfmt --install amd64
 
 Next, run the docker using AMD64:
 ```sh
-docker run -d --platform linux/amd64 --net host -v ~/ipp/db:/usr/local/Eaton/IntelligentPowerProtector/db -v ~/ipp/configs:/usr/local/Eaton/IntelligentPowerProtector/configs  --name eaton-ipp Mavyre/eaton-ipp
+docker run -d --platform linux/amd64 --net host -v ~/ipp/db:/usr/local/eaton/IntelligentPowerProtector/db -v ~/ipp/configs:/usr/local/eaton/IntelligentPowerProtector/configs  --name eaton-ipp Mavyre/eaton-ipp
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
