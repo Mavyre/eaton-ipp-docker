@@ -139,7 +139,7 @@ OR
 ## Upgrade Considerations
 
 When upgrading from app version prior to 1.72, the mount path inside the container changed.
-Eaton IPP not resides in `/usr/local/eaton/IntelligentPowerProtector` instead of `/usr/local/Eaton/IntelligentPowerProtector` (notice the lower-case `eaton` folder).  
+Eaton IPP now resides in `/usr/local/eaton/IntelligentPowerProtector` instead of `/usr/local/Eaton/IntelligentPowerProtector` (notice the lower-case `eaton` folder).  
 
 All mounted volume paths need to be adjusted.
 
