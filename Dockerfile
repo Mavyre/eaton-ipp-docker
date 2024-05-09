@@ -12,7 +12,7 @@ LABEL org.label-schema.docker.cmd="docker run -v ~/ipp/db:/usr/local/eaton/Intel
 RUN apt-get update; \
     apt-get upgrade -y; \
     apt-get install -y curl openssh-client sshpass; \
-    curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edge/116.0.1938.69" ${INSTALLER_URL} -o ipp.deb; \
+    curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0" ${INSTALLER_URL} -o ipp.deb; \
     dpkg -i ipp.deb; \
     rm ipp.deb;
 
