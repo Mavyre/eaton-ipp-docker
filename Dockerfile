@@ -12,7 +12,11 @@ LABEL org.label-schema.docker.cmd="docker run -v ~/ipp/db:/usr/local/eaton/Intel
 RUN apt-get update; \
     apt-get upgrade -y; \
     apt-get install -y curl openssh-client sshpass; \
+<<<<<<< HEAD
     curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0" ${INSTALLER_URL} -o ipp.deb; \
+=======
+    curl -L --header "Accept-Encoding: gzip, deflate, br, zstd" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:129.0) Gecko/20100101 Firefox/129.0" ${INSTALLER_URL} -o ipp.deb; \
+>>>>>>> bdcb3d6 (Dockerfile)
     dpkg -i ipp.deb; \
     rm ipp.deb;
 
